@@ -1,0 +1,2111 @@
+/* ==========================================================================
+   Tecnobyte — hoja de estilos
+   Índice:
+     1. Sistema de diseño (variables)
+     2. Base y fondo de puntos
+     3. Utilidades y componentes comunes (contenedor, botones, títulos, código)
+     4. Cabecera y navegación
+     5. Portada y medidor
+     6. Servicios
+     7. Empresa
+     8. Política ASG (capítulos y barra de progreso)
+     9. ODS (pestañas, recorrido fijado y tabla)
+    10. Contacto
+    11. Pie
+    12. Movimiento: entrada, revelado al desplazarse y movimiento reducido
+   ========================================================================== */
+
+/* 1. SISTEMA DE DISEÑO ---------------------------------------------------- */
+/* Ángulos animables del anillo de luz de los botones */
+@property --angulo {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+:root {
+  /* Anillo de luz de los botones: violetas y fucsia; el hueco transparente
+     es lo que da la sensación de giro */
+  --anillo: #7c3aed 0%, #a855f7 14%, #e879f9 30%, #c4b5fd 42%,
+    rgb(129 140 248 / 0) 56%, rgb(129 140 248 / 0) 76%, #7c3aed 100%;
+  /* Color: base morada oscura */
+  --fondo: #140a22;            /* ciruela profundo: fondo de la página */
+  --superficie: #1e1232;       /* paneles y tarjetas */
+  --superficie-alta: #2a1b44;  /* campos y elementos sobre un panel */
+  --banda: rgb(30 18 50 / 0.82); /* secciones alternas: deja ver los puntos */
+  --linea: #45335f;
+  --borde-campo: #9685b8;
+  --texto: #f4effc;
+  --texto-suave: #bcb0d2;
+  --lavanda: #b9a2ff;          /* color de marca: enlaces y botones */
+  --lavanda-clara: #d6c8ff;
+  --error: #ff9db0;
+
+  --correcto: #62d6a8;         /* estado correcto en comprobaciones */
+
+  /* Color: dimensiones ASG (solo se usan para codificar A, S y G) */
+  --ambiental: #62d6a8;
+  --social: #ff86b8;
+  --gobernanza: #f2bd5b;
+
+  /* Color: ODS (colores oficiales de cada objetivo) */
+  --ods-7: #fcc30b;
+  --ods-8: #a21942;
+  --ods-10: #dd1367;
+  --ods-13: #3f7e44;
+  --ods-16: #00689d;
+
+  /* Fondo de puntos: js/main.js lee --puntos-paso para alinear el efecto */
+  --puntos-paso: 28px;
+  --puntos-color: rgb(185 162 255 / 0.17);
+
+  /* Tipografía de estilo Apple con fuentes del sistema (no se descarga ninguna):
+     San Francisco en macOS e iOS, Segoe UI Variable en Windows. */
+  --fuente-titulos: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "Segoe UI Variable Display", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --fuente-texto: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI Variable Text", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --fuente-codigo: ui-monospace, "SF Mono", "Cascadia Code", Consolas, Menlo, monospace;
+
+  /* Escala tipográfica (razón aproximada 1,333) */
+  --t-xs: 0.8125rem;
+  --t-s: 0.9375rem;
+  --t-m: 1.0625rem;
+  --t-l: 1.375rem;
+  --t-xl: 1.875rem;
+  --t-2xl: clamp(2rem, 1.2rem + 3.2vw, 3.5rem);
+  --t-3xl: clamp(2.5rem, 1rem + 6vw, 5.5rem);
+
+  /* Espaciado (base 4 px) */
+  --e-1: 0.25rem;
+  --e-2: 0.5rem;
+  --e-3: 0.75rem;
+  --e-4: 1rem;
+  --e-5: 1.5rem;
+  --e-6: 2rem;
+  --e-7: 3rem;
+  --e-8: 4rem;
+  --e-9: clamp(5rem, 2.5rem + 10vw, 10rem);
+
+  /* Bordes y radios */
+  --radio: 4px;
+  --radio-boton: 10px;
+  --borde: 1px solid var(--linea);
+
+  /* Vidrio: islas translúcidas para la navegación y el explorador de ODS.
+     --vidrio-solido es el respaldo cuando no hay desenfoque de fondo. */
+  --vidrio: rgb(52 34 88 / 0.4);
+  --vidrio-denso: rgb(34 21 58 / 0.64);   /* superficies con mucho texto */
+  --vidrio-solido: rgb(32 20 54 / 0.96);
+  --vidrio-borde: rgb(214 200 255 / 0.2);
+  --vidrio-reflejo: linear-gradient(140deg, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0) 38%);
+  --vidrio-sombra: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 18px 40px rgb(8 3 18 / 0.42);
+  --vidrio-desenfoque: blur(14px) saturate(150%);
+  --radio-ficha: 16px;
+  --radio-isla: calc(var(--radio-ficha) + var(--e-2)); /* concéntrico con las fichas */
+
+  /* Movimiento */
+  --suave: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --ancho: 76rem;
+  --margen: clamp(1rem, 4vw, 2.5rem);
+  --alto-cabecera: 4rem;
+}
+
+/* 2. BASE Y FONDO DE PUNTOS ------------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--fondo);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* la cabecera fija no tapa los títulos */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--texto);
+  font-family: var(--fuente-texto);
+  font-size: var(--t-m);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+/* Patrón de puntos: una capa fija detrás de todo el contenido. Es solo CSS,
+   así que se ve igual sin JavaScript y en pantallas táctiles. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(circle, var(--puntos-color) 1px, transparent 1.6px);
+  background-size: var(--puntos-paso) var(--puntos-paso);
+}
+
+/* Con ratón, js/main.js dibuja y mueve los puntos en el lienzo y pone la clase
+   "puntos-vivos" para apagar este patrón fijo. */
+.puntos-vivos body::before {
+  background-image: none;
+}
+
+/* Lienzo de los puntos animados */
+.puntos {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+h1, h2, h3, h4, p, ul, ol, dl, dd, pre {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: var(--lavanda);
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--lavanda-clara);
+}
+
+:focus-visible {
+  outline: 3px solid var(--lavanda-clara);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* 3. UTILIDADES Y COMPONENTES COMUNES ------------------------------------- */
+.contenedor {
+  width: 100%;
+  max-width: calc(var(--ancho) + var(--margen) * 2);
+  margin-inline: auto;
+  padding-inline: var(--margen);
+}
+
+.saltar {
+  position: absolute;
+  left: var(--e-4);
+  top: -4rem;
+  z-index: 100;
+  padding: var(--e-3) var(--e-4);
+  background: var(--lavanda);
+  color: var(--fondo);
+  border-radius: var(--radio);
+}
+
+.saltar:focus {
+  top: var(--e-4);
+  color: var(--fondo);
+}
+
+.seccion,
+.portada {
+  isolation: isolate; /* el resplandor de los botones no se cuela bajo el fondo */
+}
+
+.seccion {
+  padding-block: var(--e-9);
+}
+
+.seccion--banda {
+  background: var(--banda);
+  border-block: var(--borde);
+}
+
+.seccion__cabeza {
+  display: grid;
+  gap: var(--e-5);
+  margin-bottom: var(--e-8);
+}
+
+.seccion__intro {
+  max-width: 34rem;
+  font-size: var(--t-l);
+  line-height: 1.45;
+  color: var(--texto-suave);
+}
+
+@media (min-width: 56rem) {
+  .seccion__cabeza {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: var(--e-7);
+  }
+}
+
+/* Títulos */
+.titulo,
+.portada__titular,
+.servicio__nombre,
+.dimension__titulo,
+.ods-panel__titulo {
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+  line-height: 1.07;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.titulo {
+  font-size: var(--t-2xl);
+}
+
+.subtitulo {
+  font-family: var(--fuente-texto);
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+/* Botones */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: var(--e-3) var(--e-5);
+  position: relative;
+  border: 2px solid var(--lavanda);
+  border-radius: var(--radio-boton);
+  background: var(--lavanda);
+  color: var(--fondo);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.boton:hover {
+  background: var(--lavanda-clara);
+  border-color: var(--lavanda-clara);
+  color: var(--fondo);
+}
+
+/* Anillo de luz de los botones: un degradado cónico que gira alrededor del
+   botón al pasar el ratón o al recibir el foco, con un resplandor detrás. */
+.boton::before,
+.boton::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: calc(var(--radio-boton) + 3px);
+  background: conic-gradient(from var(--angulo), var(--anillo));
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  animation: girar 2s linear infinite;
+  pointer-events: none;
+}
+
+/* Anillo fino: la máscara deja ver solo el borde de 3 px */
+.boton::before {
+  padding: 3px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Resplandor difuminado detrás del botón */
+.boton::after {
+  z-index: -1;
+  filter: blur(16px);
+}
+
+.boton:hover,
+.boton:focus-visible {
+  border-color: transparent;
+  outline: none;
+}
+
+.boton:hover::before,
+.boton:focus-visible::before {
+  opacity: 1;
+}
+
+.boton:hover::after,
+.boton:focus-visible::after {
+  opacity: 0.7;
+}
+
+@keyframes girar {
+  to { --angulo: 360deg; }
+}
+
+/* Entrada: al cargar la página, la luz da una vuelta al botón principal de la
+   portada (js/main.js pone y quita la clase "boton--entrada"). Usa el mismo
+   degradado del anillo, que no tiene cortes, y solo anima el ángulo y la
+   opacidad: aparece poco a poco, gira frenando y se apaga despacio. */
+.boton--entrada::before {
+  animation:
+    entrada-giro 3.2s cubic-bezier(0.3, 0, 0.15, 1) both,
+    entrada-anillo 3.2s ease-in-out both;
+}
+
+.boton--entrada::after {
+  animation:
+    entrada-giro 3.2s cubic-bezier(0.3, 0, 0.15, 1) both,
+    entrada-halo 3.2s ease-in-out both;
+}
+
+@keyframes entrada-giro {
+  from { --angulo: -120deg; }
+  to { --angulo: 360deg; }
+}
+
+@keyframes entrada-anillo {
+  0% { opacity: 0; }
+  28% { opacity: 0.85; }
+  55% { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+@keyframes entrada-halo {
+  0% { opacity: 0; }
+  28% { opacity: 0.5; }
+  55% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+.boton--pequeno {
+  min-height: 2.5rem;
+  padding: var(--e-2) var(--e-4);
+  font-size: var(--t-s);
+}
+
+.boton--linea {
+  background: transparent;
+  border-color: var(--texto);
+  color: var(--texto);
+}
+
+.boton--linea:hover {
+  background: var(--texto);
+  border-color: var(--texto);
+  color: var(--fondo);
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-3);
+}
+
+/* Color de cada dimensión ASG: las clases dim-* definen --dim y los
+   componentes de dentro lo usan. */
+.dim-a { --dim: var(--ambiental); }
+.dim-s { --dim: var(--social); }
+.dim-g { --dim: var(--gobernanza); }
+
+/* Código de compromiso (A1, S4, G2...) */
+.codigo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  padding: 0.1rem var(--e-2);
+  border: 2px solid var(--dim, var(--texto));
+  border-radius: var(--radio);
+  color: var(--dim, var(--texto));
+  font-family: var(--fuente-titulos);
+  font-size: var(--t-m);
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Vidrio. Solo lo llevan cuatro piezas funcionales: la cabecera, la barra de
+   progreso ASG, el selector de ODS y el panel del ODS activo. El resto de la
+   página se deja limpio para que el efecto destaque.
+   Por defecto el fondo es casi sólido; el desenfoque es una mejora progresiva. */
+.cabecera,
+.progreso,
+.ods__selector,
+.ods-panel {
+  background-color: var(--vidrio-solido);
+  border: 1px solid var(--vidrio-borde);
+}
+
+.progreso,
+.ods__selector,
+.ods-panel {
+  background-image: var(--vidrio-reflejo);
+  box-shadow: var(--vidrio-sombra);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .cabecera,
+  .progreso,
+  .ods__selector,
+  .ods-panel {
+    -webkit-backdrop-filter: var(--vidrio-desenfoque);
+    backdrop-filter: var(--vidrio-desenfoque);
+  }
+
+  .ods__selector {
+    background-color: var(--vidrio);
+  }
+
+  .cabecera,
+  .progreso,
+  .ods-panel {
+    background-color: var(--vidrio-denso);
+  }
+}
+
+/* Quien pide menos transparencia ve superficies sólidas, sin desenfoque */
+@media (prefers-reduced-transparency: reduce) {
+  .cabecera,
+  .progreso,
+  .ods__selector,
+  .ods-panel {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: var(--vidrio-solido);
+  }
+}
+
+/* 4. CABECERA Y NAVEGACIÓN ------------------------------------------------- */
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-width: 0 0 1px;
+}
+
+.cabecera__fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--alto-cabecera);
+}
+
+.marca {
+  display: inline-grid;
+  gap: 5px;
+  padding-block: var(--e-2);
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.marca:hover {
+  color: var(--texto);
+}
+
+.marca__byte {
+  display: block;
+}
+
+.bit {
+  fill: var(--linea);
+}
+
+.bit--1 {
+  fill: var(--lavanda);
+}
+
+.marca__nombre {
+  font-family: var(--fuente-titulos);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.menu-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  min-height: 2.75rem;
+  padding: var(--e-2) var(--e-3);
+  border: 2px solid var(--texto);
+  border-radius: var(--radio);
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.menu-boton__icono,
+.menu-boton__icono::before {
+  display: block;
+  width: 1.125rem;
+  height: 2px;
+  background: currentColor;
+  transition: transform 0.2s;
+}
+
+.menu-boton__icono {
+  position: relative;
+  transform: translateY(-3px);
+}
+
+.menu-boton__icono::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+}
+
+.menu-boton[aria-expanded="true"] .menu-boton__icono {
+  transform: rotate(45deg);
+}
+
+.menu-boton[aria-expanded="true"] .menu-boton__icono::before {
+  transform: translateY(-6px) rotate(-90deg);
+}
+
+.nav {
+  width: 100%;
+}
+
+/* Sin JavaScript el menú se ve siempre; con JavaScript se pliega en móvil */
+.js .nav {
+  display: none;
+}
+
+.js .nav.abierta {
+  display: block;
+}
+
+.nav__lista {
+  display: grid;
+  gap: var(--e-1);
+  padding-block: var(--e-3) var(--e-5);
+}
+
+.nav__lista a:not(.boton) {
+  display: block;
+  padding: var(--e-3) 0;
+  color: var(--texto);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.nav__lista a:not(.boton):hover,
+.nav__lista a:not(.boton)[aria-current="true"] {
+  color: var(--lavanda);
+}
+
+.nav__lista .boton {
+  margin-top: var(--e-2);
+}
+
+@media (min-width: 56rem) {
+  .menu-boton {
+    display: none;
+  }
+
+  .nav,
+  .js .nav {
+    display: block;
+    width: auto;
+  }
+
+  .nav__lista {
+    display: flex;
+    align-items: center;
+    gap: var(--e-6);
+    padding: 0;
+  }
+
+  .nav__lista a:not(.boton) {
+    padding: var(--e-2) 0;
+    font-size: var(--t-s);
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav__lista a[aria-current="true"] {
+    border-bottom-color: var(--lavanda);
+  }
+
+  .nav__lista .boton {
+    margin-top: 0;
+  }
+}
+
+/* 5. PORTADA Y MEDIDOR ----------------------------------------------------- */
+.portada {
+  padding-block: clamp(3rem, 1rem + 8vw, 8rem) 0;
+}
+
+.portada__titular {
+  max-width: 14ch;
+  font-size: var(--t-3xl);
+  line-height: 1.03;
+  letter-spacing: -0.035em;
+}
+
+.portada__cuerpo {
+  display: grid;
+  gap: var(--e-7);
+}
+
+.entradilla {
+  max-width: 36rem;
+  margin-block: var(--e-6);
+  font-size: var(--t-l);
+  line-height: 1.45;
+  color: var(--texto-suave);
+}
+
+@media (min-width: 56rem) {
+  .portada__cuerpo {
+    grid-template-columns: 8fr 4fr;
+    align-items: end;
+    gap: var(--e-7);
+  }
+}
+
+/* Medidor de peso de la página */
+/* Isla de vidrio (ver "Vidrio" más arriba): fondo casi sólido por defecto y
+   desenfoque solo si el navegador lo soporta. */
+.medidor {
+  padding: var(--e-5);
+  border: 1px solid var(--vidrio-borde);
+  border-radius: var(--radio-isla);
+  background-color: var(--vidrio-solido);
+  background-image: var(--vidrio-reflejo);
+  box-shadow: var(--vidrio-sombra);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .medidor {
+    -webkit-backdrop-filter: var(--vidrio-desenfoque);
+    backdrop-filter: var(--vidrio-desenfoque);
+    background-color: var(--vidrio-denso);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .medidor {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: var(--vidrio-solido);
+  }
+}
+
+.medidor__titulo {
+  font-family: var(--fuente-texto);
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.medidor__cifra {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e-2);
+  margin-top: var(--e-2);
+  font-family: var(--fuente-titulos);
+  font-size: 4.5rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.medidor__unidad {
+  font-size: var(--t-xl);
+  color: var(--texto-suave);
+}
+
+.medidor__barra {
+  display: flex;
+  height: 10px;
+  margin-top: var(--e-4);
+  border-radius: 999px; /* solo se redondean los dos extremos de la barra */
+  background: var(--linea);
+  overflow: hidden;
+}
+
+.medidor__barra span {
+  display: block;
+  min-width: 2px;
+  background: var(--tono);
+}
+
+.medidor__desglose {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--e-1) var(--e-5);
+  margin-top: var(--e-4);
+  font-size: var(--t-s);
+}
+
+.medidor__desglose li {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+}
+
+.medidor__desglose li::before {
+  content: "";
+  flex: none;
+  width: 10px;
+  height: 10px;
+  background: var(--tono);
+}
+
+.medidor__desglose b {
+  margin-left: auto;
+  white-space: nowrap;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.medidor__nota {
+  margin-top: var(--e-4);
+  padding-top: var(--e-4);
+  border-top: var(--borde);
+  font-size: var(--t-xs);
+  line-height: 1.5;
+  color: var(--texto-suave);
+}
+
+/* Tríada: las tres ideas del titular enlazan con A, S y G */
+.triada {
+  display: grid;
+  margin-top: var(--e-8);
+  border-top: 2px solid var(--texto);
+}
+
+.triada__item a {
+  display: grid;
+  gap: var(--e-2);
+  height: 100%;
+  padding: var(--e-5) 0;
+  border-bottom: var(--borde);
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.triada__palabra {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+  font-family: var(--fuente-titulos);
+  font-size: var(--t-xl);
+  font-weight: 600;
+  line-height: 1.1;
+  transition: color 0.15s;
+}
+
+.triada__palabra::before {
+  content: "";
+  flex: none;
+  width: 14px;
+  height: 14px;
+  background: var(--dim);
+}
+
+.triada__texto {
+  max-width: 26rem;
+  font-size: var(--t-s);
+  color: var(--texto-suave);
+}
+
+.triada__item a:hover .triada__palabra {
+  color: var(--dim);
+}
+
+@media (min-width: 56rem) {
+  .triada {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .triada__item a {
+    padding: var(--e-5) var(--e-5) var(--e-6);
+    border-bottom: 0;
+    border-left: var(--borde);
+  }
+
+  .triada__item:first-child a {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+/* 6. SERVICIOS ------------------------------------------------------------- */
+.servicios {
+  border-top: 2px solid var(--texto);
+}
+
+.servicio {
+  display: grid;
+  gap: var(--e-4);
+  padding-block: var(--e-6);
+  border-bottom: var(--borde);
+}
+
+.servicio__nombre {
+  font-size: clamp(1.875rem, 1.3rem + 2.2vw, 2.75rem);
+}
+
+.servicio__descripcion {
+  max-width: 30rem;
+}
+
+.servicio__lista {
+  display: grid;
+  gap: var(--e-1);
+  font-size: var(--t-s);
+  color: var(--texto-suave);
+}
+
+.servicio__lista li {
+  display: flex;
+  gap: var(--e-3);
+}
+
+.servicio__lista li::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  margin-top: 0.6em;
+  background: var(--lavanda);
+}
+
+@media (min-width: 56rem) {
+  .servicio {
+    grid-template-columns: 5fr 4fr 3fr;
+    gap: var(--e-7);
+    align-items: start;
+    padding-block: var(--e-8);
+  }
+}
+
+/* 7. EMPRESA --------------------------------------------------------------- */
+.empresa {
+  display: grid;
+  gap: var(--e-7);
+}
+
+.empresa__quienes {
+  max-width: 30rem;
+  margin-top: var(--e-5);
+  color: var(--texto-suave);
+}
+
+.empresa__mision .subtitulo {
+  margin-top: var(--e-7);
+}
+
+.mision {
+  margin-top: var(--e-3);
+  font-family: var(--fuente-titulos);
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.empresa__lado {
+  display: grid;
+  gap: var(--e-4);
+  align-content: end;
+  color: var(--texto-suave);
+}
+
+.empresa__lado .subtitulo {
+  color: var(--texto);
+  font-size: var(--t-m);
+}
+
+@media (min-width: 56rem) {
+  .empresa {
+    grid-template-columns: 7fr 4fr;
+    gap: var(--e-9);
+  }
+}
+
+.valores__titulo {
+  margin-top: var(--e-9);
+  padding-top: var(--e-5);
+  border-top: var(--borde);
+}
+
+.valores {
+  display: grid;
+  gap: var(--e-6);
+  margin-top: var(--e-5);
+}
+
+.valor {
+  display: grid;
+  gap: var(--e-3);
+  align-content: start;
+  color: var(--texto-suave);
+}
+
+.valor__nombre {
+  color: var(--texto);
+  font-family: var(--fuente-titulos);
+  font-size: var(--t-xl);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.valor__practica {
+  font-size: var(--t-s);
+  color: var(--texto);
+}
+
+@media (min-width: 56rem) {
+  .valores {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--e-7);
+  }
+}
+
+/* 7b. ESCENA DEL EDITOR ---------------------------------------------------- */
+/* Pausa entre la empresa y la política ASG: una ventana de editor de vidrio.
+   Los estilos de abajo son el ESTADO FINAL (lo que se ve sin JavaScript o con
+   movimiento reducido). js/main.js añade "editor--animado" para partir del
+   estado inicial y va sumando clases es-* hasta llegar otra vez al final. */
+.escena {
+  padding-block: var(--e-9);
+  isolation: isolate;
+}
+
+.escena__cabeza {
+  display: grid;
+  gap: var(--e-4);
+  justify-items: center;
+  margin-bottom: var(--e-7);
+  text-align: center;
+}
+
+.editor-marco {
+  max-width: 58rem;
+  margin: 0 auto;
+}
+
+.editor-marco__pie {
+  max-width: 44rem;
+  margin: var(--e-5) auto 0;
+  font-size: var(--t-s);
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+/* Ventana: quinta pieza de vidrio de la web (ver "Vidrio" más arriba) */
+.editor {
+  overflow: hidden;
+  border: 1px solid var(--vidrio-borde);
+  border-radius: var(--radio-isla);
+  background-color: var(--vidrio-solido);
+  background-image: var(--vidrio-reflejo);
+  box-shadow: var(--vidrio-sombra);
+  font-family: var(--fuente-codigo);
+  font-size: var(--t-xs);
+  font-variant-ligatures: none; /* que "!==" no se convierta en un solo símbolo */
+  line-height: 1.7;
+  letter-spacing: 0;
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .editor {
+    -webkit-backdrop-filter: var(--vidrio-desenfoque);
+    backdrop-filter: var(--vidrio-desenfoque);
+    background-color: var(--vidrio-denso);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .editor {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: var(--vidrio-solido);
+  }
+}
+
+.editor__barra {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+  padding: var(--e-3) var(--e-4);
+  border-bottom: 1px solid var(--vidrio-borde);
+  color: var(--texto-suave);
+}
+
+.editor__botones {
+  display: flex;
+  gap: 6px;
+}
+
+.editor__botones span {
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--borde-campo);
+  border-radius: 50%;
+}
+
+.editor__archivo {
+  color: var(--texto);
+}
+
+.editor__etiqueta {
+  margin-left: auto;
+  padding: 0 var(--e-2);
+  border: 1px solid var(--vidrio-borde);
+  border-radius: 999px;
+  font-family: var(--fuente-texto);
+}
+
+.editor__cuerpo {
+  display: grid;
+}
+
+.editor__codigo-zona {
+  display: grid;
+  gap: var(--e-4);
+  padding: var(--e-4) var(--e-3) var(--e-4) 0;
+}
+
+/* Código: una línea por <li>, numeradas con un contador */
+.editor__codigo {
+  counter-reset: linea;
+}
+
+.linea {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: var(--e-2);
+  counter-increment: linea;
+  transition: opacity 0.5s, color 0.5s;
+}
+
+.linea::before {
+  content: counter(linea);
+  color: var(--borde-campo);
+  text-align: right;
+}
+
+.linea code {
+  font: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Marca de línea añadida, en el margen izquierdo */
+.linea--nueva::after {
+  content: "";
+  position: absolute;
+  inset: 2px auto 2px 0;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--lavanda);
+  transition: opacity 0.4s;
+}
+
+.c-clave { color: var(--lavanda); }
+.c-texto { color: var(--lavanda-clara); }
+.c-nota { color: var(--texto-suave); }
+
+.editor__cursor {
+  display: none;
+}
+
+/* Indicador "Tab · aceptar sugerencia" */
+.editor__tab {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+  justify-self: start;
+  margin-left: calc(2rem + var(--e-2));
+  font-family: var(--fuente-texto);
+  color: var(--texto-suave);
+  opacity: 0.6;
+  transition: opacity 0.4s;
+}
+
+.editor__tab kbd {
+  padding: 0 var(--e-2);
+  border: 1px solid var(--borde-campo);
+  border-bottom-width: 2px;
+  border-radius: var(--radio);
+  font: inherit;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+/* Panel de comprobaciones */
+.editor__pruebas {
+  display: grid;
+  gap: var(--e-3);
+  align-content: start;
+  padding: var(--e-4);
+  border-top: 1px solid var(--vidrio-borde);
+  font-family: var(--fuente-texto);
+}
+
+.editor__pruebas-titulo {
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.pruebas {
+  display: grid;
+  gap: var(--e-2);
+}
+
+.prueba {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--e-3);
+  font-size: var(--t-s);
+}
+
+/* Los dos estados ocupan la misma celda y se funden uno en otro */
+.prueba__estado {
+  display: grid;
+  flex: none;
+  font-size: var(--t-xs);
+  font-weight: 600;
+}
+
+.prueba__pendiente,
+.prueba__correcto {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--e-2);
+  transition: opacity 0.4s;
+}
+
+.prueba__pendiente::before,
+.prueba__correcto::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.prueba__pendiente {
+  color: var(--texto-suave);
+  opacity: 0;
+}
+
+.prueba__pendiente::before {
+  border: 1px solid currentColor;
+}
+
+.prueba__correcto {
+  color: var(--correcto);
+}
+
+.prueba__correcto::before {
+  background: currentColor;
+}
+
+.editor__resumen {
+  padding-top: var(--e-3);
+  border-top: 1px solid var(--vidrio-borde);
+  font-weight: 600;
+  color: var(--correcto);
+  transition: opacity 0.4s;
+}
+
+@media (min-width: 40rem) {
+  .editor {
+    font-size: var(--t-s);
+  }
+
+  .editor__codigo-zona {
+    padding: var(--e-5) var(--e-5) var(--e-5) var(--e-2);
+  }
+
+  .editor__pruebas {
+    padding: var(--e-5);
+  }
+}
+
+@media (min-width: 56rem) {
+  .editor__cuerpo {
+    grid-template-columns: 3fr 2fr;
+  }
+
+  .editor__pruebas {
+    border-top: 0;
+    border-left: 1px solid var(--vidrio-borde);
+  }
+}
+
+/* --- Secuencia animada (solo con la clase editor--animado) --- */
+
+/* 1. Inicio: la sugerencia aún no está, el cursor parpadea unas pocas veces */
+.editor--animado .linea--nueva {
+  opacity: 0;
+}
+
+.editor--animado .linea--nueva::after,
+.editor--animado .editor__tab,
+.editor--animado .editor__resumen {
+  opacity: 0;
+}
+
+.editor--animado .editor__cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--lavanda-clara);
+  animation: parpadeo 1s steps(1) 4;
+}
+
+@keyframes parpadeo {
+  50% { opacity: 0; }
+}
+
+/* 2. Sugerencia: texto tenue y en cursiva, y aparece el indicador de Tab */
+.editor--animado.es-sugerencia .linea--nueva {
+  opacity: 0.72;
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+.editor--animado.es-sugerencia .linea--nueva span {
+  color: inherit;
+}
+
+.editor--animado.es-sugerencia .editor__tab {
+  opacity: 1;
+}
+
+/* 3. La tecla Tab se "pulsa" una vez */
+.editor--animado.es-tab .editor__tab kbd {
+  animation: pulsar 0.4s var(--suave);
+}
+
+@keyframes pulsar {
+  40% {
+    transform: translateY(2px) scale(0.94);
+    background: var(--lavanda);
+    color: var(--fondo);
+  }
+}
+
+/* 4. Aceptada: pasa a código normal y aparecen las marcas del margen */
+.editor--animado.es-aceptada .linea--nueva {
+  opacity: 1;
+  color: inherit;
+  font-style: normal;
+}
+
+.editor--animado.es-aceptada .linea--nueva .c-clave { color: var(--lavanda); }
+.editor--animado.es-aceptada .linea--nueva .c-texto { color: var(--lavanda-clara); }
+
+.editor--animado.es-aceptada .linea--nueva::after {
+  opacity: 1;
+}
+
+.editor--animado.es-aceptada .editor__tab {
+  opacity: 0.6;
+}
+
+.editor--animado.es-aceptada .editor__cursor {
+  display: none;
+}
+
+/* 5. Comprobaciones: cada fila pasa de pendiente a correcto con "es-hecha" */
+.editor--animado .prueba:not(.es-hecha) .prueba__pendiente {
+  opacity: 1;
+}
+
+.editor--animado .prueba:not(.es-hecha) .prueba__correcto {
+  opacity: 0;
+}
+
+/* 6. Final estable */
+.editor--animado.es-final .editor__resumen {
+  opacity: 1;
+}
+/* 8. POLÍTICA ASG ---------------------------------------------------------- */
+.aviso {
+  max-width: 46rem;
+  margin-bottom: var(--e-7);
+  padding: var(--e-4) var(--e-5);
+  border-left: 4px solid var(--lavanda);
+  background: var(--superficie);
+  font-size: var(--t-s);
+}
+
+/* Barra de progreso: se queda fija bajo la cabecera mientras se recorre la
+   política. js/main.js crea una marca por compromiso y las va rellenando. */
+.progreso {
+  position: sticky;
+  top: calc(var(--alto-cabecera) + var(--e-2));
+  z-index: 40;
+  display: grid;
+  gap: var(--e-2);
+  padding: var(--e-3) var(--e-5);
+  border-radius: var(--radio-isla);
+}
+
+.progreso__capitulos {
+  display: flex;
+  gap: var(--e-3);
+}
+
+/* Cada capítulo ocupa un ancho proporcional a sus compromisos (--cuantos) */
+.progreso__capitulo {
+  flex: var(--cuantos, 1) 1 0;
+  display: grid;
+  gap: var(--e-1);
+  min-width: 0;
+}
+
+.progreso__capitulo a {
+  padding-block: var(--e-1);
+  color: var(--texto-suave);
+  font-size: var(--t-s);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.progreso__capitulo a:hover,
+.progreso__capitulo a[aria-current="true"] {
+  color: var(--dim);
+}
+
+.progreso__marcas {
+  display: flex;
+  gap: 3px;
+}
+
+.progreso__marcas span {
+  flex: 1;
+  height: 4px;
+  background: var(--linea);
+  transform-origin: bottom;
+  transition: background-color 0.3s, transform 0.3s var(--suave);
+}
+
+.progreso__marcas .hecha,
+.progreso__marcas .actual {
+  background: var(--dim);
+}
+
+.progreso__marcas .actual {
+  transform: scaleY(2.5);
+}
+
+.progreso__estado {
+  font-size: var(--t-xs);
+  color: var(--texto-suave);
+}
+
+@media (min-width: 56rem) {
+  .progreso {
+    grid-template-columns: 1fr 14rem;
+    align-items: end;
+    gap: var(--e-6);
+  }
+
+  .progreso__estado {
+    text-align: right;
+  }
+}
+
+/* Capítulos A, S y G */
+.dimension {
+  display: grid;
+  gap: var(--e-7);
+  padding-block: var(--e-8) var(--e-9);
+  border-top: 2px solid var(--dim);
+}
+
+.dimension:first-of-type {
+  border-top: 0;
+}
+
+.dimension__cabeza {
+  display: grid;
+  gap: var(--e-2);
+  align-content: start;
+  color: var(--texto-suave);
+}
+
+.dimension__letra {
+  font-family: var(--fuente-titulos);
+  font-size: clamp(7rem, 3rem + 16vw, 15rem);
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: var(--dim);
+}
+
+.dimension__titulo {
+  margin-top: var(--e-5);
+  font-size: clamp(1.875rem, 1.3rem + 2.2vw, 2.75rem);
+  color: var(--texto);
+}
+
+.dimension__lema {
+  font-size: var(--t-l);
+  font-weight: 600;
+  color: var(--dim);
+}
+
+.dimension__cabeza > p:last-child {
+  max-width: 24rem;
+}
+
+/* Los compromisos van en una sola columna para descubrirlos uno a uno */
+.compromisos {
+  display: grid;
+  gap: clamp(3rem, 11vh, 6.5rem);
+}
+
+.compromiso {
+  display: grid;
+  gap: var(--e-3);
+  justify-items: start;
+  max-width: 38rem;
+  scroll-margin-top: 11rem; /* cabecera + barra de progreso */
+}
+
+.compromiso h4 {
+  font-family: var(--fuente-titulos);
+  font-size: var(--t-xl);
+  font-weight: 600;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.compromiso p {
+  color: var(--texto-suave);
+}
+
+/* El compromiso que se está leyendo, o al que se llega desde un enlace de la
+   sección ODS, lleva su código relleno. */
+.compromiso.actual .codigo,
+.compromiso:target .codigo,
+a.enlace-compromiso:hover .codigo {
+  background: var(--dim);
+  color: var(--fondo);
+}
+
+@media (min-width: 64rem) {
+  .dimension {
+    grid-template-columns: 5fr 7fr;
+    gap: var(--e-8);
+  }
+
+  .dimension__cabeza {
+    position: sticky;
+    top: 11rem;
+    align-self: start;
+  }
+
+  /* El título del capítulo se lee antes de que llegue el primer compromiso */
+  .compromisos {
+    padding-top: 22vh;
+  }
+}
+
+/* 9. ODS ------------------------------------------------------------------- */
+.ods-7 { --ods: var(--ods-7); --ods-texto: var(--fondo); }
+.ods-8 { --ods: var(--ods-8); --ods-texto: #fff; }
+.ods-10 { --ods: var(--ods-10); --ods-texto: #fff; }
+.ods-13 { --ods: var(--ods-13); --ods-texto: #fff; }
+.ods-16 { --ods: var(--ods-16); --ods-texto: #fff; }
+
+.ods {
+  display: grid;
+  gap: var(--e-5);
+}
+
+/* Isla de navegación: las cinco fichas comparten una misma pieza de vidrio.
+   --px y --py colocan un reflejo suave; con ratón, js/main.js lo mueve. */
+.ods__selector {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--e-1);
+  padding: var(--e-2);
+  border-radius: var(--radio-isla);
+  background-image:
+    radial-gradient(11rem circle at var(--px, 50%) var(--py, 0%), rgb(255 255 255 / 0.12), rgb(255 255 255 / 0) 70%),
+    var(--vidrio-reflejo);
+}
+
+.ods-ficha {
+  display: grid;
+  gap: var(--e-2);
+  justify-items: center;
+  align-content: start;
+  padding: var(--e-2);
+  border: 1px solid transparent;
+  border-radius: var(--radio-ficha);
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.ods-ficha:hover {
+  background-color: rgb(255 255 255 / 0.07);
+}
+
+.ods-ficha:focus-visible {
+  outline-offset: 2px;
+  border-radius: var(--radio-ficha);
+}
+
+/* Ficha elegida: tinte, borde y halo del color de su ODS. Las dos primeras
+   líneas son el respaldo para navegadores sin color-mix(). */
+.ods-ficha[aria-selected="true"] {
+  background-color: rgb(255 255 255 / 0.12);
+  border-color: var(--lavanda-clara);
+  background-color: color-mix(in srgb, var(--ods) 30%, transparent);
+  border-color: color-mix(in srgb, var(--ods) 62%, white);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.24),
+    0 0 1.25rem color-mix(in srgb, var(--ods) 42%, transparent);
+}
+
+/* El número va en una pastilla con el color oficial del ODS */
+.ods-ficha__numero {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: calc(var(--radio-ficha) - var(--e-2));
+  background: var(--ods);
+  color: var(--ods-texto);
+  font-family: var(--fuente-titulos);
+  font-size: var(--t-l);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.ods-ficha__nombre {
+  display: none;
+  font-size: var(--t-s);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ods__pista {
+  margin-top: var(--e-4);
+  font-size: var(--t-s);
+  color: var(--texto-suave);
+}
+
+/* Sin JavaScript no hay pestañas: se ocultan las fichas y se ven todos los paneles */
+html:not(.js) .ods__selector {
+  display: none;
+}
+
+html:not(.js) .ods__paneles {
+  display: grid;
+  gap: var(--e-5);
+}
+
+/* Panel del ODS activo: vidrio denso para leer bien, con una línea de luz
+   del color del ODS en el borde superior. */
+.ods-panel {
+  padding: var(--e-5);
+  border-radius: var(--radio-isla);
+  background-image:
+    linear-gradient(var(--ods), var(--ods)),
+    var(--vidrio-reflejo);
+  background-size: 100% 4px, auto;
+  background-repeat: no-repeat;
+}
+
+.ods-panel__cabeza {
+  display: grid;
+  gap: var(--e-3);
+  padding-bottom: var(--e-5);
+  border-bottom: var(--borde);
+}
+
+.ods-panel__dimension {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--dim);
+}
+
+.ods-panel__dimension::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--dim);
+}
+
+.ods-panel__titulo {
+  font-size: clamp(1.875rem, 1.3rem + 2.2vw, 2.75rem);
+}
+
+.enlaces-codigo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-2) var(--e-5);
+}
+
+.enlace-compromiso {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  padding-block: var(--e-1);
+  color: var(--texto);
+  font-size: var(--t-s);
+  font-weight: 600;
+}
+
+.enlace-compromiso:hover {
+  color: var(--dim);
+}
+
+.relacion {
+  display: grid;
+  gap: var(--e-5);
+  margin-top: var(--e-5);
+}
+
+.relacion dt {
+  margin-bottom: var(--e-1);
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.relacion dd {
+  max-width: 44rem;
+}
+
+@media (min-width: 40rem) {
+  .ods-ficha {
+    justify-items: start;
+    padding: var(--e-3);
+  }
+
+  .ods-ficha__nombre {
+    display: block;
+  }
+}
+
+@media (min-width: 64rem) {
+  .ods {
+    grid-template-columns: 17rem 1fr;
+    gap: var(--e-6);
+    align-items: start;
+  }
+
+  .ods__selector {
+    grid-template-columns: 1fr;
+  }
+
+  .ods-ficha {
+    grid-template-columns: 2.5rem 1fr;
+    gap: var(--e-3);
+    align-items: center;
+    padding: var(--e-2) var(--e-3) var(--e-2) var(--e-2);
+  }
+
+  .ods-panel {
+    padding: var(--e-6);
+  }
+
+  /* "Por qué" y "Efecto" van en paralelo para que el panel quepa en pantalla */
+  .relacion {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--e-5) var(--e-6);
+  }
+
+  .relacion > div:first-child {
+    grid-column: 1 / -1;
+  }
+
+  html:not(.js) .ods {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Recorrido fijado: en pantallas grandes el explorador se queda quieto y el
+   scroll va pasando de un ODS al siguiente. js/main.js activa esta clase solo
+   si el panel cabe entero en la ventana, y calcula la altura del recorrido. */
+.ods-recorrido--fijado .ods {
+  position: sticky;
+  top: 6rem;
+}
+
+/* Tabla resumen */
+.tabla__titulo {
+  margin-top: var(--e-9);
+  margin-bottom: var(--e-4);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-s);
+  text-align: left;
+}
+
+.tabla thead th {
+  padding: var(--e-3) var(--e-4) var(--e-3) 0;
+  border-bottom: 2px solid var(--texto);
+  font-weight: 600;
+}
+
+.tabla tbody th,
+.tabla td {
+  padding: var(--e-5) var(--e-4) var(--e-5) 0;
+  border-bottom: var(--borde);
+  vertical-align: top;
+}
+
+.tabla tbody th {
+  font-family: var(--fuente-titulos);
+  font-size: var(--t-l);
+  font-weight: 600;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.ods-chip {
+  display: inline-block;
+  margin: 0 var(--e-1) var(--e-1) 0;
+  padding: 0.1rem var(--e-2);
+  border-radius: var(--radio);
+  background: var(--ods);
+  color: var(--ods-texto);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* En pantallas estrechas cada fila de la tabla se apila y cada celda
+   muestra el nombre de su columna (atributo data-columna). */
+@media (max-width: 47.99rem) {
+  .tabla thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .tabla,
+  .tabla tbody,
+  .tabla tr,
+  .tabla th,
+  .tabla td {
+    display: block;
+  }
+
+  .tabla tr {
+    padding-block: var(--e-4);
+    border-top: 2px solid var(--dim);
+  }
+
+  .tabla tbody th,
+  .tabla td {
+    padding: var(--e-2) 0;
+    border: 0;
+  }
+
+  .tabla td::before {
+    content: attr(data-columna);
+    display: block;
+    font-size: var(--t-xs);
+    font-weight: 600;
+    color: var(--texto-suave);
+  }
+}
+
+/* 10. CONTACTO ------------------------------------------------------------- */
+.contacto {
+  display: grid;
+  gap: var(--e-7);
+}
+
+.contacto .seccion__intro {
+  margin-top: var(--e-5);
+}
+
+.datos {
+  display: grid;
+  gap: var(--e-4);
+  margin-top: var(--e-7);
+}
+
+.datos dt {
+  font-size: var(--t-s);
+  color: var(--texto-suave);
+}
+
+.datos__nota {
+  margin-top: var(--e-5);
+  font-size: var(--t-xs);
+  color: var(--texto-suave);
+}
+
+/* Marcador de dato sin definir: se ve a propósito */
+.pendiente {
+  display: inline-block;
+  padding: 0 var(--e-2);
+  border: 1px dashed var(--ods-7);
+  border-radius: var(--radio);
+  color: var(--ods-7);
+  font-size: var(--t-s);
+}
+
+.formulario {
+  display: grid;
+  gap: var(--e-5);
+  align-content: start;
+}
+
+.formulario__aviso {
+  font-size: var(--t-s);
+  color: var(--texto-suave);
+}
+
+.campo {
+  display: grid;
+  gap: var(--e-2);
+}
+
+.campo label {
+  font-size: var(--t-s);
+  font-weight: 600;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+  min-height: 3rem;
+  padding: var(--e-3);
+  border: 1px solid var(--borde-campo);
+  border-radius: var(--radio);
+  background: var(--superficie-alta);
+  color: var(--texto);
+  font: inherit;
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.campo [aria-invalid="true"] {
+  border-color: var(--error);
+}
+
+.campo__error {
+  font-size: var(--t-s);
+  color: var(--error);
+}
+
+.formulario > .boton {
+  justify-self: start;
+}
+
+.resultado {
+  display: grid;
+  gap: var(--e-4);
+  padding-top: var(--e-5);
+  border-top: var(--borde);
+}
+
+.resultado__titulo {
+  font-size: var(--t-m);
+}
+
+.resultado__texto {
+  padding: var(--e-4);
+  border-radius: var(--radio);
+  background: var(--superficie-alta);
+  font: inherit;
+  font-size: var(--t-s);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.resultado__estado {
+  min-height: 1.5em;
+  font-size: var(--t-s);
+  color: var(--texto-suave);
+}
+
+@media (min-width: 56rem) {
+  .contacto {
+    grid-template-columns: 5fr 6fr;
+    gap: var(--e-9);
+  }
+}
+
+/* 11. PIE ------------------------------------------------------------------ */
+.pie {
+  padding-block: var(--e-7);
+  background: var(--fondo);
+  color: var(--texto-suave);
+  font-size: var(--t-s);
+}
+
+.pie a {
+  color: var(--texto);
+}
+
+.pie__fila {
+  display: grid;
+  gap: var(--e-6);
+}
+
+.pie__marca {
+  color: var(--texto);
+  font-family: var(--fuente-titulos);
+  font-size: var(--t-l);
+  font-weight: 700;
+}
+
+.pie__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-2) var(--e-5);
+}
+
+.pie__lista a {
+  display: inline-block;
+  padding-block: var(--e-1);
+}
+
+.pie__nota {
+  max-width: 40rem;
+  font-size: var(--t-xs);
+}
+
+@media (min-width: 56rem) {
+  .pie__fila {
+    grid-template-columns: 1fr auto;
+  }
+
+  .pie__nota {
+    grid-column: 1 / -1;
+  }
+}
+
+/* 12. MOVIMIENTO ----------------------------------------------------------- */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+
+/* Entrada de la portada: una sola secuencia al cargar */
+.portada__titular,
+.entradilla,
+.portada .acciones,
+.medidor,
+.triada {
+  animation: aparecer 0.9s var(--suave) both;
+}
+
+.entradilla { animation-delay: 0.12s; }
+.portada .acciones { animation-delay: 0.22s; }
+.medidor { animation-delay: 0.34s; }
+.triada { animation-delay: 0.46s; }
+
+/* Escritura del titular al cargar (js/main.js). Cada letra ya ocupa su sitio
+   y solo cambia de invisible a visible; el cursor es una sombra a la derecha
+   de la última letra escrita, así que no desplaza el texto. */
+.portada__titular--escribiendo {
+  animation: none;
+}
+
+.letra {
+  opacity: 0;
+}
+
+.letra--vista {
+  opacity: 1;
+}
+
+.letra--cursor {
+  box-shadow: 0.07em 0 0 var(--lavanda);
+  animation: parpadeo-cursor 0.9s steps(1) infinite;
+}
+
+@keyframes parpadeo-cursor {
+  50% { box-shadow: 0.07em 0 0 transparent; }
+}
+/* Al cambiar de ODS, el panel nuevo entra con suavidad */
+.js .ods-panel {
+  animation: aparecer 0.45s var(--suave);
+}
+
+/* Revelado al desplazarse. js/main.js pone la clase "animar" en <html> solo
+   cuando el revelado está en marcha, y "revelar" en cada bloque; al entrar en
+   pantalla les añade "visto". Sin JavaScript, todo se ve desde el principio. */
+.animar .revelar {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: opacity 0.7s var(--suave), transform 0.7s var(--suave);
+}
+
+.animar .revelar.visto {
+  opacity: 1;
+  transform: none;
+}
+
+.animar .valor:nth-child(2) { transition-delay: 0.1s; }
+.animar .valor:nth-child(3) { transition-delay: 0.2s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .boton:focus-visible {
+    outline: 3px solid var(--lavanda-clara);
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media print {
+  .animar .revelar {
+    opacity: 1;
+    transform: none;
+  }
+}
