@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Tecnobyte | Desarrollo web ligero, accesible y transparente</title>
+  <meta name="description" content="Tecnobyte diseña, desarrolla y mantiene páginas web, aplicaciones a medida y tiendas online con una política ASG propia: código eficiente, accesibilidad y gestión transparente.">
+  <meta name="theme-color" content="#140a22">
+
+  <!-- Compartir en redes. EDITAR: cuando la web tenga dominio, añadir og:url
+       y cambiar og:image por la URL absoluta de la imagen. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Tecnobyte">
+  <meta property="og:title" content="Tecnobyte | Desarrollo web ligero, accesible y transparente">
+  <meta property="og:description" content="Páginas web, aplicaciones a medida y tiendas online con una política ambiental, social y de gobernanza propia.">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta property="og:image:alt" content="Logotipo de Tecnobyte sobre fondo morado oscuro">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/main.js" defer></script>
+</head>
+
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <!-- Lienzo del fondo de puntos: js/main.js ilumina los puntos cercanos al ratón -->
+  <canvas class="puntos" id="puntos" aria-hidden="true"></canvas>
+
+  <!-- ================= CABECERA ================= -->
+  <header class="cabecera" id="inicio">
+    <div class="contenedor cabecera__fila">
+      <a class="marca" href="#inicio" aria-label="Tecnobyte, inicio">
+        <!-- El logotipo es un byte: la letra T (01010100) en binario -->
+        <svg class="marca__byte" viewBox="0 0 94 10" width="94" height="10" aria-hidden="true" focusable="false">
+          <rect class="bit" x="0" width="10" height="10"/>
+          <rect class="bit bit--1" x="12" width="10" height="10"/>
+          <rect class="bit" x="24" width="10" height="10"/>
+          <rect class="bit bit--1" x="36" width="10" height="10"/>
+          <rect class="bit" x="48" width="10" height="10"/>
+          <rect class="bit bit--1" x="60" width="10" height="10"/>
+          <rect class="bit" x="72" width="10" height="10"/>
+          <rect class="bit" x="84" width="10" height="10"/>
+        </svg>
+        <span class="marca__nombre">Tecnobyte</span>
+      </a>
+
+      <button class="menu-boton" type="button" aria-expanded="false" aria-controls="navegacion">
+        <span class="menu-boton__icono" aria-hidden="true"></span>
+        <span class="menu-boton__texto">Menú</span>
+      </button>
+
+      <nav class="nav" id="navegacion" aria-label="Principal">
+        <ul class="nav__lista">
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#empresa">Empresa</a></li>
+          <li><a href="#sostenibilidad">Sostenibilidad</a></li>
+          <li><a href="#ods">ODS</a></li>
+          <li><a class="boton boton--pequeno" href="#contacto">Cuéntanos tu proyecto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- ================= PORTADA ================= -->
+    <section class="portada" aria-labelledby="titulo-portada">
+      <div class="contenedor">
+        <div class="portada__cuerpo">
+          <div class="portada__texto">
+            <h1 class="portada__titular" id="titulo-portada">
+              Webs ligeras, accesibles y con las cuentas claras.
+            </h1>
+            <p class="entradilla">
+              Diseñamos, desarrollamos y mantenemos páginas web, aplicaciones a medida
+              y tiendas online para empresas y particulares. Lo hacemos con una política
+              ambiental, social y de gobernanza que aplicamos en cada proyecto.
+            </p>
+            <div class="acciones">
+              <a class="boton" href="#contacto">Cuéntanos tu proyecto</a>
+              <a class="boton boton--linea" href="#sostenibilidad">Leer nuestra política ASG</a>
+            </div>
+          </div>
+
+          <!-- Medidor: peso real de esta página, medido por js/main.js -->
+          <aside class="medidor" aria-labelledby="medidor-titulo">
+            <h2 class="medidor__titulo" id="medidor-titulo">Lo que ha pesado esta página</h2>
+            <p class="medidor__cifra">
+              <span id="medidor-peso">—</span>
+              <span class="medidor__unidad">kB</span>
+            </p>
+            <div class="medidor__barra" id="medidor-barra" aria-hidden="true"></div>
+            <ul class="medidor__desglose" id="medidor-desglose"></ul>
+            <p class="medidor__nota" id="medidor-nota">
+              Midiendo los archivos que ha descargado tu navegador.
+            </p>
+          </aside>
+        </div>
+
+        <!-- Las tres ideas del titular son las tres dimensiones ASG -->
+        <ul class="triada">
+          <li class="triada__item dim-a">
+            <a href="#ambiental">
+              <span class="triada__palabra">Ligeras</span>
+              <span class="triada__texto">Código optimizado y alojamiento con energía renovable. Es nuestra política ambiental.</span>
+            </a>
+          </li>
+          <li class="triada__item dim-s">
+            <a href="#social">
+              <span class="triada__palabra">Accesibles</span>
+              <span class="triada__texto">Webs que cualquier persona puede usar, hechas por un equipo con condiciones dignas. Es nuestra política social.</span>
+            </a>
+          </li>
+          <li class="triada__item dim-g">
+            <a href="#gobernanza">
+              <span class="triada__palabra">Cuentas claras</span>
+              <span class="triada__texto">Presupuestos desglosados, datos protegidos y licencias en regla. Es nuestra política de gobernanza.</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= SERVICIOS ================= -->
+    <section class="seccion" id="servicios" aria-labelledby="titulo-servicios">
+      <div class="contenedor">
+        <div class="seccion__cabeza">
+          <h2 class="titulo" id="titulo-servicios">Qué hacemos</h2>
+          <p class="seccion__intro">
+            Tres servicios que cubren la vida completa de un proyecto digital:
+            crearlo, venderlo y mantenerlo en buen estado.
+          </p>
+        </div>
+
+        <div class="servicios">
+          <article class="servicio">
+            <h3 class="servicio__nombre">Páginas y aplicaciones web</h3>
+            <p class="servicio__descripcion">
+              Diseño y desarrollo de páginas web corporativas y aplicaciones web a medida,
+              para empresas y para particulares.
+            </p>
+            <ul class="servicio__lista">
+              <li>Páginas web corporativas</li>
+              <li>Aplicaciones web a medida</li>
+              <li>Accesibilidad según las pautas WCAG 2.1</li>
+            </ul>
+          </article>
+
+          <article class="servicio">
+            <h3 class="servicio__nombre">Tiendas online</h3>
+            <p class="servicio__descripcion">
+              Desarrollo de comercio electrónico seguro y eficiente, con la privacidad
+              de quien compra pensada desde el diseño.
+            </p>
+            <ul class="servicio__lista">
+              <li>Conexiones cifradas con SSL/TLS</li>
+              <li>Cumplimiento del RGPD y la LSSI-CE</li>
+              <li>Políticas de cookies y datos transparentes</li>
+            </ul>
+          </article>
+
+          <article class="servicio">
+            <h3 class="servicio__nombre">Mantenimiento</h3>
+            <p class="servicio__descripcion">
+              Mantenimiento informático y de aplicaciones para que lo que ya funciona
+              siga siendo rápido y seguro.
+            </p>
+            <ul class="servicio__lista">
+              <li>Actualizaciones</li>
+              <li>Optimización de código</li>
+              <li>Ciberseguridad</li>
+              <li>Soporte técnico</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= EMPRESA ================= -->
+    <section class="seccion seccion--banda" id="empresa" aria-labelledby="titulo-empresa">
+      <div class="contenedor">
+        <div class="empresa">
+          <div class="empresa__mision">
+            <h2 class="titulo" id="titulo-empresa">Quiénes somos</h2>
+            <p class="empresa__quienes">
+              Tecnobyte es una empresa del sector TIC dedicada al desarrollo integral
+              de proyectos digitales sostenibles.
+            </p>
+            <h3 class="subtitulo">Nuestra misión</h3>
+            <p class="mision">
+              Ofrecer soluciones digitales de alta calidad que impulsen la transformación
+              digital de nuestros clientes, reduciendo al mínimo la huella ecológica del
+              software y promoviendo prácticas éticas, accesibles e inclusivas en la
+              industria tecnológica.
+            </p>
+          </div>
+
+          <div class="empresa__lado">
+            <h3 class="subtitulo">Por qué una empresa de software habla de sostenibilidad</h3>
+            <p>
+              El software parece inmaterial, pero no lo es. Cada página que se carga
+              consume electricidad en un servidor, en la red y en el dispositivo de quien
+              la visita. Cada formulario recoge datos de una persona. Cada web que no se
+              puede usar con un lector de pantalla deja a alguien fuera.
+            </p>
+            <p>
+              Por eso nuestras decisiones técnicas son también decisiones ambientales,
+              sociales y de gestión, y las recogemos en una
+              <a href="#sostenibilidad">política ASG</a>.
+            </p>
+          </div>
+        </div>
+
+        <h3 class="subtitulo valores__titulo">Nuestros valores</h3>
+        <div class="valores">
+          <div class="valor">
+            <h4 class="valor__nombre">Ecoeficiencia digital</h4>
+            <p>Compromiso con el código limpio y con reducir el consumo energético en servidores y dispositivos.</p>
+            <p class="valor__practica">En la práctica: antes de añadir un recurso a una web, comprobamos que hace falta.</p>
+          </div>
+          <div class="valor">
+            <h4 class="valor__nombre">Transparencia y ética</h4>
+            <p>Honestidad en los contratos, protección de la privacidad de los datos y cumplimiento normativo estricto.</p>
+            <p class="valor__practica">En la práctica: el cliente sabe qué paga y qué firma antes de empezar.</p>
+          </div>
+          <div class="valor">
+            <h4 class="valor__nombre">Inclusión y responsabilidad social</h4>
+            <p>Entornos digitales accesibles para todas las personas y condiciones laborales dignas e igualitarias para el equipo.</p>
+            <p class="valor__practica">En la práctica: la accesibilidad es un requisito de la entrega, no un añadido.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ESCENA: DEL COMPROMISO AL CÓDIGO ================= -->
+    <!-- Pausa narrativa entre la empresa y la política ASG. La ventana es una
+         maqueta decorativa (aria-hidden): el mensaje está en el título, la
+         entradilla y el pie de figura. js/main.js la anima una sola vez al
+         entrar en pantalla; sin JavaScript se ve ya en su estado final. -->
+    <section class="escena" id="del-compromiso-al-codigo" aria-labelledby="titulo-escena">
+      <div class="contenedor">
+        <div class="escena__cabeza">
+          <h2 class="titulo" id="titulo-escena">Del compromiso al código</h2>
+          <p class="seccion__intro">
+            Un compromiso solo sirve si acaba en el trabajo de cada día. Así se vería
+            uno de los nuestros dentro de un editor.
+          </p>
+        </div>
+
+        <figure class="editor-marco">
+          <div class="editor" id="editor" aria-hidden="true">
+            <div class="editor__barra">
+              <span class="editor__botones"><span></span><span></span><span></span></span>
+              <span class="editor__archivo">revisar-imagen.js</span>
+              <span class="editor__etiqueta">Demostración</span>
+            </div>
+
+            <div class="editor__cuerpo">
+              <div class="editor__codigo-zona">
+                <ol class="editor__codigo">
+                  <li class="linea"><code><span class="c-nota">// Imágenes accesibles y ligeras</span></code></li>
+                  <li class="linea"><code><span class="c-clave">function</span> revisarImagen(imagen) {</code></li>
+                  <li class="linea"><code>  <span class="c-clave">const</span> avisos = [];</code></li>
+                  <li class="linea"><code>  <span class="c-clave">if</span> (!imagen.hasAttribute(<span class="c-texto">'alt'</span>)) {</code></li>
+                  <li class="linea"><code>    avisos.push(<span class="c-texto">'Falta el alt'</span>);</code></li>
+                  <li class="linea"><code>  }<span class="editor__cursor"></span></code></li>
+                  <li class="linea linea--nueva"><code>  <span class="c-clave">if</span> (imagen.loading !== <span class="c-texto">'lazy'</span>) {</code></li>
+                  <li class="linea linea--nueva"><code>    avisos.push(<span class="c-texto">'Sin carga diferida'</span>);</code></li>
+                  <li class="linea linea--nueva"><code>  }</code></li>
+                  <li class="linea linea--nueva"><code>  <span class="c-clave">return</span> avisos;</code></li>
+                  <li class="linea linea--nueva"><code>}</code></li>
+                </ol>
+                <p class="editor__tab"><kbd>Tab</kbd> aceptar sugerencia</p>
+              </div>
+
+              <div class="editor__pruebas">
+                <p class="editor__pruebas-titulo">Comprobaciones de la demostración</p>
+                <ul class="pruebas">
+                  <li class="prueba">
+                    <span class="prueba__texto">Avisa si falta el texto alternativo</span>
+                    <span class="prueba__estado"><span class="prueba__pendiente">Pendiente</span><span class="prueba__correcto">Correcto</span></span>
+                  </li>
+                  <li class="prueba">
+                    <span class="prueba__texto">Avisa si falta la carga diferida</span>
+                    <span class="prueba__estado"><span class="prueba__pendiente">Pendiente</span><span class="prueba__correcto">Correcto</span></span>
+                  </li>
+                  <li class="prueba">
+                    <span class="prueba__texto">Devuelve la lista de avisos</span>
+                    <span class="prueba__estado"><span class="prueba__pendiente">Pendiente</span><span class="prueba__correcto">Correcto</span></span>
+                  </li>
+                </ul>
+                <p class="editor__resumen">3 de 3 correctas</p>
+              </div>
+            </div>
+          </div>
+
+          <figcaption class="editor-marco__pie">
+            Demostración ilustrativa: el editor sugiere comprobar también la carga
+            diferida de una imagen, se acepta la sugerencia y tres comprobaciones
+            pasan a correcto. No es código real del proyecto ni una ejecución o
+            medición real. Se relaciona con los compromisos
+            <a href="#c-s4">S4</a> (accesibilidad) y <a href="#c-a2">A2</a> (código optimizado).
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    <!-- ================= SOSTENIBILIDAD (ASG) ================= -->
+    <section class="seccion" id="sostenibilidad" aria-labelledby="titulo-asg">
+      <div class="contenedor">
+        <div class="seccion__cabeza">
+          <h2 class="titulo" id="titulo-asg">Nuestra política ASG</h2>
+          <p class="seccion__intro">
+            Quince compromisos repartidos en tres dimensiones: ambiental, social y de
+            gobernanza. Cada uno lleva un código para poder seguirlo hasta los
+            <a href="#ods">Objetivos de Desarrollo Sostenible</a> a los que contribuye.
+          </p>
+        </div>
+
+        <p class="aviso">
+          <strong>Son compromisos, no resultados medidos.</strong>
+          Esta página no incluye cifras de consumo, emisiones ni ahorro porque todavía
+          no hay mediciones que publicar.
+        </p>
+
+        <!-- Progreso del recorrido: js/main.js añade una marca por compromiso
+             y la muestra. Sin JavaScript permanece oculta. -->
+        <nav class="progreso" id="progreso" aria-label="Capítulos de la política ASG" hidden>
+          <ol class="progreso__capitulos">
+            <li class="progreso__capitulo dim-a">
+              <a href="#ambiental">Ambiental</a>
+              <span class="progreso__marcas" aria-hidden="true"></span>
+            </li>
+            <li class="progreso__capitulo dim-s">
+              <a href="#social">Social</a>
+              <span class="progreso__marcas" aria-hidden="true"></span>
+            </li>
+            <li class="progreso__capitulo dim-g">
+              <a href="#gobernanza">Gobernanza</a>
+              <span class="progreso__marcas" aria-hidden="true"></span>
+            </li>
+          </ol>
+          <p class="progreso__estado" id="progreso-estado"></p>
+        </nav>
+
+        <!-- ---- A ---- -->
+        <article class="dimension dim-a" id="ambiental" aria-labelledby="titulo-a">
+          <header class="dimension__cabeza">
+            <span class="dimension__letra" aria-hidden="true">A</span>
+            <h3 class="dimension__titulo" id="titulo-a">Política ambiental</h3>
+            <p class="dimension__lema">Ligeras</p>
+            <p>Reducir el impacto de nuestros equipos, de los servidores que usamos y del código que escribimos.</p>
+          </header>
+
+          <ul class="compromisos">
+            <li class="compromiso" id="c-a1">
+              <span class="codigo">A1</span>
+              <h4>Eficiencia energética de equipos y servidores</h4>
+              <p>Trabajamos con hardware de bajo consumo con certificación Energy Star y alojamos todas las webs y aplicaciones en proveedores de <i lang="en">hosting</i> verde verificables, que operen con un 100 % de energías renovables y un PUE bajo.</p>
+            </li>
+            <li class="compromiso" id="c-a2">
+              <span class="codigo">A2</span>
+              <h4>Código optimizado y menor huella digital</h4>
+              <p><i lang="en">Green coding</i>: código limpio, recursos multimedia comprimidos, ningún script innecesario y caché eficiente. Así se transfieren menos datos y los dispositivos gastan menos energía y batería.</p>
+            </li>
+            <li class="compromiso" id="c-a3">
+              <span class="codigo">A3</span>
+              <h4>Reparar, reutilizar y reciclar el hardware</h4>
+              <p>Reparamos y actualizamos componentes para alargar la vida útil de los equipos. Los que quedan obsoletos se entregan en puntos limpios y a gestores autorizados de residuos electrónicos (RAEE).</p>
+            </li>
+            <li class="compromiso" id="c-a4">
+              <span class="codigo">A4</span>
+              <h4>Oficina sin papel</h4>
+              <p>Facturación y gestión documental 100 % digitales. Usamos papel reciclado certificado solo cuando es estrictamente necesario.</p>
+            </li>
+          </ul>
+        </article>
+
+        <!-- ---- S ---- -->
+        <article class="dimension dim-s" id="social" aria-labelledby="titulo-s">
+          <header class="dimension__cabeza">
+            <span class="dimension__letra" aria-hidden="true">S</span>
+            <h3 class="dimension__titulo" id="titulo-s">Política social</h3>
+            <p class="dimension__lema">Accesibles</p>
+            <p>Las personas que trabajan en Tecnobyte y las que usan lo que desarrollamos.</p>
+          </header>
+
+          <ul class="compromisos">
+            <li class="compromiso" id="c-s1">
+              <span class="codigo">S1</span>
+              <h4>Igualdad de oportunidades y no discriminación</h4>
+              <p>Selección y promoción interna basadas en competencias técnicas y mérito, con equidad salarial y sin discriminación por género, edad, origen o condición.</p>
+            </li>
+            <li class="compromiso" id="c-s2">
+              <span class="codigo">S2</span>
+              <h4>Condiciones dignas y conciliación</h4>
+              <p>Jornadas flexibles, opción de teletrabajo para conciliar la vida familiar y personal, y puestos de trabajo ergonómicos y seguros.</p>
+            </li>
+            <li class="compromiso" id="c-s3">
+              <span class="codigo">S3</span>
+              <h4>Formación continua del equipo</h4>
+              <p>Planes periódicos de formación en nuevas tecnologías web, ciberseguridad, accesibilidad y desarrollo sostenible.</p>
+            </li>
+            <li class="compromiso" id="c-s4">
+              <span class="codigo">S4</span>
+              <h4>Accesibilidad web para todas las personas</h4>
+              <p>Desarrollamos sitios y aplicaciones siguiendo las pautas internacionales WCAG 2.1 del W3C, para que personas con discapacidad visual, auditiva, motora o cognitiva accedan sin barreras.</p>
+            </li>
+            <li class="compromiso" id="c-s5">
+              <span class="codigo">S5</span>
+              <h4>Privacidad y derechos de los usuarios</h4>
+              <p>Privacidad desde el diseño (<i lang="en">Privacy by Design</i>), políticas de cookies y datos transparentes, y respeto a los derechos digitales de quien usa nuestras webs.</p>
+            </li>
+          </ul>
+        </article>
+
+        <!-- ---- G ---- -->
+        <article class="dimension dim-g" id="gobernanza" aria-labelledby="titulo-g">
+          <header class="dimension__cabeza">
+            <span class="dimension__letra" aria-hidden="true">G</span>
+            <h3 class="dimension__titulo" id="titulo-g">Política de gobernanza</h3>
+            <p class="dimension__lema">Cuentas claras</p>
+            <p>Cómo se gestiona la empresa: con ética, transparencia y responsabilidad.</p>
+          </header>
+
+          <ul class="compromisos">
+            <li class="compromiso" id="c-g1">
+              <span class="codigo">G1</span>
+              <h4>Cumplimiento de la legislación</h4>
+              <p>Cumplimiento estricto del RGPD, la LOPDGDD y la LSSI-CE en todos los desarrollos web y en los procesos internos.</p>
+            </li>
+            <li class="compromiso" id="c-g2">
+              <span class="codigo">G2</span>
+              <h4>Protección de datos y seguridad de la información</h4>
+              <p>Protocolos de ciberseguridad: cifrado SSL/TLS, auditorías periódicas de vulnerabilidades y copias de seguridad seguras.</p>
+            </li>
+            <li class="compromiso" id="c-g3">
+              <span class="codigo">G3</span>
+              <h4>Propiedad intelectual y software legítimo</h4>
+              <p>Solo usamos software y librerías con licencias legítimas, de código abierto o comerciales autorizadas. Respetamos los derechos de autor de terceros y documentamos la autoría del código propio.</p>
+            </li>
+            <li class="compromiso" id="c-g4">
+              <span class="codigo">G4</span>
+              <h4>Transparencia en contratos y presupuestos</h4>
+              <p>Presupuestos desglosados y contratos en lenguaje comprensible, sin cláusulas abusivas ni costes ocultos.</p>
+            </li>
+            <li class="compromiso" id="c-g5">
+              <span class="codigo">G5</span>
+              <h4>Prevención de conflictos de intereses y corrupción</h4>
+              <p>Código ético interno de tolerancia cero frente a sobornos, favoritismos o prácticas comerciales desleales.</p>
+            </li>
+            <li class="compromiso" id="c-g6">
+              <span class="codigo">G6</span>
+              <h4>Selección responsable de proveedores</h4>
+              <p>Evaluamos a los proveedores de <i lang="en">hosting</i>, hardware y herramientas SaaS con criterios de transparencia, seguridad y sostenibilidad.</p>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= ODS ================= -->
+    <section class="seccion" id="ods" aria-labelledby="titulo-ods">
+      <div class="contenedor">
+        <div class="seccion__cabeza">
+          <h2 class="titulo" id="titulo-ods">De nuestros compromisos a la Agenda 2030</h2>
+          <p class="seccion__intro">
+            Nuestra política contribuye a cinco Objetivos de Desarrollo Sostenible.
+            Elige uno para ver qué compromisos lo sostienen, por qué existe esa relación
+            y qué cambia en nuestro trabajo.
+          </p>
+        </div>
+
+        <!-- En pantallas grandes, js/main.js fija el explorador y el scroll pasa de un ODS al siguiente -->
+        <div class="ods-recorrido" id="ods-recorrido">
+        <div class="ods">
+          <div class="ods__lado">
+          <div class="ods__selector" role="tablist" aria-label="Objetivos de Desarrollo Sostenible" aria-orientation="vertical">
+            <button class="ods-ficha ods-7" role="tab" id="tab-ods7" aria-controls="panel-ods7" aria-selected="true" type="button">
+              <span class="ods-ficha__numero">7</span>
+              <span class="ods-ficha__nombre">Energía asequible y no contaminante</span>
+            </button>
+            <button class="ods-ficha ods-13" role="tab" id="tab-ods13" aria-controls="panel-ods13" aria-selected="false" type="button">
+              <span class="ods-ficha__numero">13</span>
+              <span class="ods-ficha__nombre">Acción por el clima</span>
+            </button>
+            <button class="ods-ficha ods-8" role="tab" id="tab-ods8" aria-controls="panel-ods8" aria-selected="false" type="button">
+              <span class="ods-ficha__numero">8</span>
+              <span class="ods-ficha__nombre">Trabajo decente y crecimiento económico</span>
+            </button>
+            <button class="ods-ficha ods-10" role="tab" id="tab-ods10" aria-controls="panel-ods10" aria-selected="false" type="button">
+              <span class="ods-ficha__numero">10</span>
+              <span class="ods-ficha__nombre">Reducción de las desigualdades</span>
+            </button>
+            <button class="ods-ficha ods-16" role="tab" id="tab-ods16" aria-controls="panel-ods16" aria-selected="false" type="button">
+              <span class="ods-ficha__numero">16</span>
+              <span class="ods-ficha__nombre">Paz, justicia e instituciones sólidas</span>
+            </button>
+          </div>
+          <p class="ods__pista" id="ods-pista" hidden></p>
+          </div>
+
+          <div class="ods__paneles">
+
+            <!-- ODS 7 -->
+            <article class="ods-panel ods-7 dim-a" role="tabpanel" id="panel-ods7" aria-labelledby="tab-ods7" tabindex="0">
+              <header class="ods-panel__cabeza">
+                <p class="ods-panel__dimension">Dimensión ambiental</p>
+                <h3 class="ods-panel__titulo">ODS 7. Energía asequible y no contaminante</h3>
+                <ul class="enlaces-codigo" aria-label="Compromisos relacionados">
+                  <li><a class="enlace-compromiso" href="#c-a1"><span class="codigo">A1</span> Eficiencia energética de equipos y servidores</a></li>
+                </ul>
+              </header>
+              <dl class="relacion">
+                <div>
+                  <dt>Compromiso</dt>
+                  <dd>Alojar todas las webs y aplicaciones en proveedores verificables que operen con un 100 % de energías renovables y un PUE bajo, y trabajar con equipos de bajo consumo.</dd>
+                </div>
+                <div>
+                  <dt>Por qué se relacionan</dt>
+                  <dd>Una web consume electricidad cada vez que alguien la abre. De dónde sale esa energía y cuánta se gasta depende del servidor que elegimos. El ODS 7 pide justo eso: más energía renovable (meta 7.2) y más eficiencia energética (meta 7.3).</dd>
+                </div>
+                <div>
+                  <dt>Efecto en nuestra actividad</dt>
+                  <dd>El origen de la energía y la eficiencia del centro de datos pasan a ser criterios para elegir alojamiento, al mismo nivel que el precio o la velocidad. Los proyectos que entregamos funcionan sobre infraestructura renovable.</dd>
+                </div>
+              </dl>
+            </article>
+
+            <!-- ODS 13 -->
+            <article class="ods-panel ods-13 dim-a" role="tabpanel" id="panel-ods13" aria-labelledby="tab-ods13" tabindex="0">
+              <header class="ods-panel__cabeza">
+                <p class="ods-panel__dimension">Dimensión ambiental</p>
+                <h3 class="ods-panel__titulo">ODS 13. Acción por el clima</h3>
+                <ul class="enlaces-codigo" aria-label="Compromisos relacionados">
+                  <li><a class="enlace-compromiso" href="#c-a1"><span class="codigo">A1</span> Eficiencia energética de equipos y servidores</a></li>
+                  <li><a class="enlace-compromiso" href="#c-a2"><span class="codigo">A2</span> Código optimizado y menor huella digital</a></li>
+                </ul>
+              </header>
+              <dl class="relacion">
+                <div>
+                  <dt>Compromiso</dt>
+                  <dd>Optimizar el código para reducir el consumo de recursos digitales y usar servidores alimentados con energías renovables.</dd>
+                </div>
+                <div>
+                  <dt>Por qué se relacionan</dt>
+                  <dd>Cada dato que se transfiere y cada cálculo que hace un dispositivo gasta energía, y esa energía tiene emisiones asociadas. Una web más ligera sobre servidores renovables reduce esas emisiones en cada visita. Es nuestra forma de mitigar el cambio climático desde el software (meta 13.3).</dd>
+                </div>
+                <div>
+                  <dt>Efecto en nuestra actividad</dt>
+                  <dd>Comprimir imágenes, eliminar scripts innecesarios y configurar bien la caché forman parte del desarrollo y del mantenimiento, no son un extra. El resultado son webs que cargan con menos datos y gastan menos batería.</dd>
+                </div>
+              </dl>
+            </article>
+
+            <!-- ODS 8 -->
+            <article class="ods-panel ods-8 dim-s" role="tabpanel" id="panel-ods8" aria-labelledby="tab-ods8" tabindex="0">
+              <header class="ods-panel__cabeza">
+                <p class="ods-panel__dimension">Dimensión social</p>
+                <h3 class="ods-panel__titulo">ODS 8. Trabajo decente y crecimiento económico</h3>
+                <ul class="enlaces-codigo" aria-label="Compromisos relacionados">
+                  <li><a class="enlace-compromiso" href="#c-s1"><span class="codigo">S1</span> Igualdad de oportunidades</a></li>
+                  <li><a class="enlace-compromiso" href="#c-s2"><span class="codigo">S2</span> Condiciones dignas y conciliación</a></li>
+                </ul>
+              </header>
+              <dl class="relacion">
+                <div>
+                  <dt>Compromiso</dt>
+                  <dd>Ofrecer condiciones laborales flexibles e inclusivas: jornadas flexibles, teletrabajo, puestos ergonómicos y seguros, y equidad salarial.</dd>
+                </div>
+                <div>
+                  <dt>Por qué se relacionan</dt>
+                  <dd>El ODS 8 define el trabajo decente como un empleo con igual salario por trabajo de igual valor (meta 8.5) y en un entorno seguro (meta 8.8). En un sector de muchas horas frente a una pantalla, la flexibilidad y la ergonomía son la forma concreta de cumplirlo.</dd>
+                </div>
+                <div>
+                  <dt>Efecto en nuestra actividad</dt>
+                  <dd>La organización del trabajo se decide pensando en el bienestar del equipo: horarios que permiten conciliar, posibilidad de trabajar desde casa y puestos preparados para ello.</dd>
+                </div>
+              </dl>
+            </article>
+
+            <!-- ODS 10 -->
+            <article class="ods-panel ods-10 dim-s" role="tabpanel" id="panel-ods10" aria-labelledby="tab-ods10" tabindex="0">
+              <header class="ods-panel__cabeza">
+                <p class="ods-panel__dimension">Dimensión social</p>
+                <h3 class="ods-panel__titulo">ODS 10. Reducción de las desigualdades</h3>
+                <ul class="enlaces-codigo" aria-label="Compromisos relacionados">
+                  <li><a class="enlace-compromiso" href="#c-s1"><span class="codigo">S1</span> Igualdad de oportunidades</a></li>
+                  <li><a class="enlace-compromiso" href="#c-s4"><span class="codigo">S4</span> Accesibilidad web</a></li>
+                </ul>
+              </header>
+              <dl class="relacion">
+                <div>
+                  <dt>Compromiso</dt>
+                  <dd>Garantizar la accesibilidad web según las pautas WCAG para personas con discapacidad, y seleccionar y promocionar al equipo sin discriminación.</dd>
+                </div>
+                <div>
+                  <dt>Por qué se relacionan</dt>
+                  <dd>Una web que no se puede usar con lector de pantalla o con teclado deja a personas fuera de servicios, compras e información. Hacerla accesible elimina esa barrera, que es lo que busca la inclusión de todas las personas (meta 10.2) y la igualdad de oportunidades (meta 10.3).</dd>
+                </div>
+                <div>
+                  <dt>Efecto en nuestra actividad</dt>
+                  <dd>La accesibilidad es un requisito de cada entrega: contraste, navegación por teclado, textos alternativos y estructura correcta se trabajan desde el diseño. Nadie se queda atrás por cómo está hecha una web nuestra.</dd>
+                </div>
+              </dl>
+            </article>
+
+            <!-- ODS 16 -->
+            <article class="ods-panel ods-16 dim-g" role="tabpanel" id="panel-ods16" aria-labelledby="tab-ods16" tabindex="0">
+              <header class="ods-panel__cabeza">
+                <p class="ods-panel__dimension">Dimensión de gobernanza</p>
+                <h3 class="ods-panel__titulo">ODS 16. Paz, justicia e instituciones sólidas</h3>
+                <ul class="enlaces-codigo" aria-label="Compromisos relacionados">
+                  <li><a class="enlace-compromiso" href="#c-g1"><span class="codigo">G1</span> Cumplimiento de la legislación</a></li>
+                  <li><a class="enlace-compromiso" href="#c-g2"><span class="codigo">G2</span> Seguridad de la información</a></li>
+                  <li><a class="enlace-compromiso" href="#c-g3"><span class="codigo">G3</span> Software legítimo</a></li>
+                  <li><a class="enlace-compromiso" href="#c-g4"><span class="codigo">G4</span> Transparencia en contratos</a></li>
+                  <li><a class="enlace-compromiso" href="#c-g5"><span class="codigo">G5</span> Prevención de la corrupción</a></li>
+                </ul>
+              </header>
+              <dl class="relacion">
+                <div>
+                  <dt>Compromiso</dt>
+                  <dd>Cumplir estrictamente el marco legal (RGPD), aplicar medidas de ciberseguridad, usar solo licencias legítimas, contratar con total transparencia y mantener un código ético contra la corrupción.</dd>
+                </div>
+                <div>
+                  <dt>Por qué se relacionan</dt>
+                  <dd>El ODS 16 pide organizaciones transparentes que rindan cuentas (meta 16.6), reducir la corrupción y el soborno (meta 16.5) y proteger las libertades fundamentales (meta 16.10), entre ellas la privacidad. Una empresa que maneja datos de otras personas forma parte de ese objetivo.</dd>
+                </div>
+                <div>
+                  <dt>Efecto en nuestra actividad</dt>
+                  <dd>Los clientes saben qué pagan y qué firman, los datos de quienes usan sus webs están cifrados y tratados conforme a la ley, y el código que entregamos tiene sus licencias en regla. Eso refuerza la confianza de clientes y usuarios.</dd>
+                </div>
+              </dl>
+            </article>
+          </div>
+        </div>
+        </div>
+
+        <!-- Tabla resumen, con las columnas que pide el enunciado -->
+        <h3 class="subtitulo tabla__titulo" id="titulo-tabla">Tabla resumen</h3>
+        <div class="tabla-marco">
+          <table class="tabla" aria-labelledby="titulo-tabla">
+            <thead>
+              <tr>
+                <th scope="col">Dimensión ASG</th>
+                <th scope="col">Compromiso empresarial</th>
+                <th scope="col">ODS relacionado</th>
+                <th scope="col">Justificación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="dim-a">
+                <th scope="row" data-columna="Dimensión ASG">Ambiental</th>
+                <td data-columna="Compromiso empresarial">Uso de servidores con un 100 % de energías renovables y optimización del código (<i lang="en">green coding</i>) para reducir el consumo de recursos digitales.</td>
+                <td data-columna="ODS relacionado">
+                  <span class="ods-chip ods-7">ODS 7</span>
+                  <span class="ods-chip ods-13">ODS 13</span>
+                </td>
+                <td data-columna="Justificación">Favorece la eficiencia energética de la infraestructura digital y reduce la huella de carbono y el impacto climático de las aplicaciones.</td>
+              </tr>
+              <tr class="dim-s">
+                <th scope="row" data-columna="Dimensión ASG">Social</th>
+                <td data-columna="Compromiso empresarial">Garantizar la accesibilidad web (WCAG) para personas con discapacidad y ofrecer condiciones laborales flexibles e inclusivas.</td>
+                <td data-columna="ODS relacionado">
+                  <span class="ods-chip ods-8">ODS 8</span>
+                  <span class="ods-chip ods-10">ODS 10</span>
+                </td>
+                <td data-columna="Justificación">Promueve la inclusión digital sin dejar a nadie atrás y asegura entornos de trabajo justos, equitativos y centrados en el bienestar de la plantilla.</td>
+              </tr>
+              <tr class="dim-g">
+                <th scope="row" data-columna="Dimensión ASG">Gobernanza</th>
+                <td data-columna="Compromiso empresarial">Cumplimiento estricto del marco legal (RGPD), ciberseguridad, licencias legítimas y total transparencia en la contratación.</td>
+                <td data-columna="ODS relacionado">
+                  <span class="ods-chip ods-16">ODS 16</span>
+                </td>
+                <td data-columna="Justificación">Fortalece la confianza de clientes y usuarios mediante una gestión ética, segura, transparente y respetuosa con los derechos digitales.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONTACTO ================= -->
+    <section class="seccion seccion--banda" id="contacto" aria-labelledby="titulo-contacto">
+      <div class="contenedor contacto">
+        <div class="contacto__info">
+          <h2 class="titulo" id="titulo-contacto">Cuéntanos tu proyecto</h2>
+          <p class="seccion__intro">
+            Dinos qué necesitas y te responderemos con un presupuesto desglosado,
+            sin costes ocultos.
+          </p>
+
+          <!-- Datos de contacto FICTICIOS, inventados para el trabajo. El dominio .example está reservado para ejemplos y no pertenece a nadie. -->
+          <dl class="datos">
+            <div>
+              <dt>Correo</dt>
+              <dd><a href="mailto:hola@tecnobyte.example">hola@tecnobyte.example</a></dd>
+            </div>
+            <div>
+              <dt>Teléfono</dt>
+              <dd>+34 900 000 000</dd>
+            </div>
+            <div>
+              <dt>Dirección</dt>
+              <dd>Calle del Byte, 8, 2.º B<br>28000 Madrid</dd>
+            </div>
+          </dl>
+          <p class="datos__nota">Datos de contacto ficticios: Tecnobyte no existe.</p>
+        </div>
+
+        <!-- Sin servidor: el formulario no envía nada, solo redacta el mensaje. -->
+        <form class="formulario" id="formulario" data-correo="hola@tecnobyte.example" novalidate>
+          <p class="formulario__aviso">
+            Este formulario no envía ni guarda datos. Redacta tu mensaje y tú decides
+            cómo hacérnoslo llegar.
+          </p>
+
+          <div class="campo">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" autocomplete="name" required aria-describedby="error-nombre">
+            <p class="campo__error" id="error-nombre" hidden>Escribe tu nombre.</p>
+          </div>
+
+          <div class="campo">
+            <label for="servicio">Qué necesitas</label>
+            <select id="servicio" name="servicio">
+              <option>Una página o aplicación web</option>
+              <option>Una tienda online</option>
+              <option>Mantenimiento</option>
+              <option>Todavía no lo sé</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="mensaje">Tu proyecto</label>
+            <textarea id="mensaje" name="mensaje" rows="5" required aria-describedby="error-mensaje"></textarea>
+            <p class="campo__error" id="error-mensaje" hidden>Cuéntanos brevemente qué necesitas.</p>
+          </div>
+
+          <button class="boton" type="submit">Redactar mensaje</button>
+
+          <div class="resultado" id="resultado" hidden>
+            <h3 class="resultado__titulo" id="resultado-titulo" tabindex="-1">Tu mensaje</h3>
+            <pre class="resultado__texto" id="resultado-texto"></pre>
+            <div class="acciones">
+              <button class="boton" type="button" id="copiar">Copiar mensaje</button>
+              <a class="boton boton--linea" id="abrir-correo" href="#" hidden>Abrir en mi correo</a>
+            </div>
+            <p class="resultado__estado" id="estado" role="status"></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= PIE ================= -->
+  <footer class="pie">
+    <div class="contenedor pie__fila">
+      <div>
+        <p class="pie__marca">Tecnobyte</p>
+        <p>Diseño, desarrollo y mantenimiento web.</p>
+      </div>
+      <nav aria-label="Pie de página">
+        <ul class="pie__lista">
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#empresa">Empresa</a></li>
+          <li><a href="#sostenibilidad">Sostenibilidad</a></li>
+          <li><a href="#ods">ODS</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+      <p class="pie__nota">
+        Tecnobyte es una empresa ficticia creada para un proyecto académico de
+        1.º de Desarrollo de Aplicaciones Web, módulo de Sostenibilidad aplicada al
+        sistema productivo. Esta web no usa cookies, fuentes externas ni rastreadores.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
