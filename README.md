@@ -1,6 +1,5 @@
 # 🌐 Web Corporativa — Empresa Tecnológica Sostenible
 
-![Project Status](https://img.shields.io/badge/Estado-En%20desarrollo-8B5CF6)
 ![Project Type](https://img.shields.io/badge/Proyecto-Académico-6D28D9)
 ![DAW](https://img.shields.io/badge/DAW-1º%20Curso-9333EA)
 
